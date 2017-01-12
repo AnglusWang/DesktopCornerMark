@@ -1,6 +1,5 @@
 package com.angluswang.badgedemo;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -32,21 +30,21 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 try {
                     final int count = Integer.parseInt(tvCount.getText().toString());
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(getApplicationContext())
-                                    .setSmallIcon(getApplicationInfo().icon)
-                                    .setWhen(System.currentTimeMillis())
-                                    .setAutoCancel(true)
-                                    .setContentTitle("ContentTitle")
-                                    .setContentText("ContentText")
-                                    .setNumber(count);
-
+//                    NotificationCompat.Builder mBuilder =
+//                            new NotificationCompat.Builder(getApplicationContext())
+//                                    .setSmallIcon(getApplicationInfo().icon)
+//                                    .setWhen(System.currentTimeMillis())
+//                                    .setAutoCancel(true)
+//                                    .setContentTitle("ContentTitle")
+//                                    .setContentText("ContentText")
+//                                    .setNumber(count);
+//
                     //点击set 后，app退到桌面等待3s看效果（有的launcher当app在前台设置未读数量无效）
-                    final Notification notification = mBuilder.build();
+//                    final Notification notification = mBuilder.build();
                     new Handler(getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            BadgeUtil.sendBadgeNotification(notification, NOTIFY_ID,
+                            BadgeUtil.sendBadgeNotification(null, NOTIFY_ID,
                                     getApplicationContext(), count, count);
                             Toast.makeText(getApplicationContext(), "success",
                                     Toast.LENGTH_SHORT).show();
@@ -73,21 +71,17 @@ public class MainActivity extends FragmentActivity {
 //        Toast.makeText(this, launcherPackageName, Toast.LENGTH_SHORT).show();
     }
 
-    public String getLauncherPackageName(Context context)
-    {
+    public String getLauncherPackageName(Context context) {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         final ResolveInfo res = context.getPackageManager().resolveActivity(intent, 0);
-        if(res.activityInfo == null)
-        {
+        if (res.activityInfo == null) {
             return "";
         }
         //如果是不同桌面主题，可能会出现某些问题，这部分暂未处理
-        if(res.activityInfo.packageName.equals("android"))
-        {
+        if (res.activityInfo.packageName.equals("android")) {
             return "";
-        }else
-        {
+        } else {
             return res.activityInfo.packageName;
         }
     }
